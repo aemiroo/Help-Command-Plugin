@@ -17,6 +17,8 @@
 
 <h3>5000+ Downloads!</h3>
 
+<h3>Now supports MiniMessage!</h3>
+
 </div>
 
 ## Download
@@ -24,7 +26,7 @@
 - [SpigotMC](https://www.spigotmc.org/resources/help-command.102926/) [V1.0 - LATEST]
 - [Github Releases](https://github.com/VoidemLIVE/Help-Command-Plugin/releases) [V2.0 - LATEST]
 - [Modrinth](https://modrinth.com/plugin/help-command) [V2.9 - LATEST]
-- [Hangar](https://hangar.papermc.io/VoidemLIVE/HelpCommand) [V2.8.4 - LATEST]
+- [Hangar](https://hangar.papermc.io/VoidemLIVE/HelpCommand) [V2.8.4 - 2.9.2]
 - [PolyMart](https://polymart.org/resource/help-command-1-18-1-20-2.5143#!) [V2.6 - V2.8.2]
 - [BuiltByBit](https://builtbybit.com/resources/help-command.28957/) [V2.0 - V2.5.5]
 
@@ -71,11 +73,11 @@ colour codes and more!
 - Add building the plugin to documentation
 - Add PlaceholderAPI to documentation
 
-Create an issue or contact me on my 
+Create an issue/pr or contact me on my 
 [Discord server](https://support.voidem.com)
 if you have any suggestions!
 <br>
-Or create a pull request.
+
 
 [![Bstats](https://bstats.org/signatures/bukkit/Help%20Plugin.svg)](https://bstats.org/plugin/bukkit/Help%20Plugin/15592)
 
