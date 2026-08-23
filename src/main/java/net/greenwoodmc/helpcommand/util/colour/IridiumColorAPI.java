@@ -14,10 +14,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import net.md_5.bungee.api.ChatColor;
-import org.apache.commons.lang.Validate;
+import java.util.regex.Matcher;
 import org.bukkit.Bukkit;
 
 public class IridiumColorAPI {
+    private static final int UNKNOWN_VERSION = -1;
+    private static final java.util.regex.Pattern VERSION_PATTERN = java.util.regex.Pattern.compile("([0-9]+)(?:[.]([0-9]+))?");
     private static final int VERSION = getVersion();
     private static final boolean SUPPORTS_RGB;
     private static final List<String> SPECIAL_COLORS;
@@ -167,27 +169,82 @@ public class IridiumColorAPI {
         return (ChatColor)COLORS.get(nearestColor);
     }
 
+    /**
+     * Returns a number comparable against the legacy {@code 1.x} minor version, so
+     * {@code 1.16.5} yields {@code 16}. Schemes that dropped the {@code 1.} prefix
+     * (such as {@code 26.2}) are newer than every {@code 1.x} release and therefore
+     * yield {@link Integer#MAX_VALUE}. Yields {@link #UNKNOWN_VERSION} when the
+     * server version cannot be understood.
+     */
     private static int getVersion() {
-        String version = Bukkit.getVersion();
-        Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
+        try {
+            int version = parseMajorVersion(Bukkit.getBukkitVersion());
+            if (version == UNKNOWN_VERSION) {
+                version = parseMajorVersion(extractMinecraftVersion(Bukkit.getVersion()));
+            }
+
+            return version;
+        } catch (Throwable ignored) {
+            return UNKNOWN_VERSION;
+        }
+    }
+
+    private static int parseMajorVersion(String version) {
+        if (version == null) {
+            return UNKNOWN_VERSION;
+        }
+
+        Matcher matcher = VERSION_PATTERN.matcher(version);
+        if (!matcher.find()) {
+            return UNKNOWN_VERSION;
+        }
+
+        try {
+            if (Integer.parseInt(matcher.group(1)) != 1) {
+                return Integer.MAX_VALUE;
+            }
+
+            String minor = matcher.group(2);
+            return minor == null ? 0 : Integer.parseInt(minor);
+        } catch (NumberFormatException ignored) {
+            return UNKNOWN_VERSION;
+        }
+    }
+
+    /**
+     * Pulls {@code 1.20.1} out of {@code git-Paper-196 (MC: 1.20.1)}, leaving anything
+     * that does not carry an {@code MC:} marker untouched.
+     */
+    private static String extractMinecraftVersion(String version) {
+        if (version == null) {
+            return null;
+        }
+
         int index = version.lastIndexOf("MC:");
-        if (index != -1) {
-            version = version.substring(index + 4, version.length() - 1);
-        } else if (version.endsWith("SNAPSHOT")) {
-            index = version.indexOf(45);
-            version = version.substring(0, index);
+        if (index == -1) {
+            return version;
         }
 
-        int lastDot = version.lastIndexOf(46);
-        if (version.indexOf(46) != lastDot) {
-            version = version.substring(0, lastDot);
-        }
+        String remainder = version.substring(index + "MC:".length());
+        int end = remainder.indexOf(')');
+        return (end == -1 ? remainder : remainder.substring(0, end)).trim();
+    }
 
-        return Integer.parseInt(version.substring(2));
+    /**
+     * Checks the RGB entry point itself rather than trusting the version number alone,
+     * so a server whose bundled chat API predates hex colours still degrades gracefully.
+     */
+    private static boolean hasRgbChatColor() {
+        try {
+            ChatColor.class.getMethod("of", Color.class);
+            return true;
+        } catch (NoSuchMethodException | LinkageError ignored) {
+            return false;
+        }
     }
 
     static {
-        SUPPORTS_RGB = VERSION >= 16;
+        SUPPORTS_RGB = (VERSION == UNKNOWN_VERSION || VERSION >= 16) && hasRgbChatColor();
         SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m", "§l", "§n", "§o", "§k", "§m");
         COLORS = ImmutableMap.builder().put(new Color(0), ChatColor.getByChar('0')).put(new Color(170), ChatColor.getByChar('1')).put(new Color(43520), ChatColor.getByChar('2')).put(new Color(43690), ChatColor.getByChar('3')).put(new Color(11141120), ChatColor.getByChar('4')).put(new Color(11141290), ChatColor.getByChar('5')).put(new Color(16755200), ChatColor.getByChar('6')).put(new Color(11184810), ChatColor.getByChar('7')).put(new Color(5592405), ChatColor.getByChar('8')).put(new Color(5592575), ChatColor.getByChar('9')).put(new Color(5635925), ChatColor.getByChar('a')).put(new Color(5636095), ChatColor.getByChar('b')).put(new Color(16733525), ChatColor.getByChar('c')).put(new Color(16733695), ChatColor.getByChar('d')).put(new Color(16777045), ChatColor.getByChar('e')).put(new Color(16777215), ChatColor.getByChar('f')).build();
         PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());

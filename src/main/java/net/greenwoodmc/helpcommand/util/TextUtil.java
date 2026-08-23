@@ -2,13 +2,68 @@ package net.greenwoodmc.helpcommand.util;
 
 import net.greenwoodmc.helpcommand.util.colour.IridiumColorAPI;
 import org.bukkit.Color;
+import org.bukkit.command.CommandSender;
 
 public class TextUtil {
+
+    // defaults to legacy
+    private static volatile FormatMode format = FormatMode.LEGACY;
+
     public TextUtil() {
+    }
+
+    public static FormatMode getFormat() {
+        return format;
+    }
+
+    public static void setFormat(FormatMode mode) {
+        format = mode == null ? FormatMode.LEGACY : mode;
+    }
+
+    public static boolean isMiniMessageAvailable() {
+        try {
+            Class.forName("net.kyori.adventure.text.minimessage.MiniMessage").getMethod("miniMessage");
+            Class.forName("net.kyori.adventure.audience.Audience");
+            return true;
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
     public static String color(String string) {
         return IridiumColorAPI.process(string);
+    }
+
+
+    public static void send(CommandSender target, String message) {
+        if (message == null) {
+            return;
+        }
+
+        if (format == FormatMode.MINIMESSAGE) {
+            AdventureText.send(target, AdventureText.parse(message));
+        } else {
+            target.sendMessage(color(message));
+        }
+    }
+
+    public static void sendInternal(CommandSender target, String message) {
+        if (message == null) {
+            return;
+        }
+
+        if (format == FormatMode.MINIMESSAGE) {
+            AdventureText.send(target, AdventureText.fromLegacy(message));
+        } else {
+            target.sendMessage(color(message));
+        }
+    }
+
+    public static void sendPagePrompt(CommandSender target,
+                                      String back, String backCommand,
+                                      String page,
+                                      String forward, String forwardCommand) {
+        AdventureText.sendPagePrompt(target, back, backCommand, page, forward, forwardCommand);
     }
 
     public static Color getColor(String s) {

@@ -17,70 +17,79 @@
 # Main Help Command
 ######################################
 
-version: "2.9.2" # DO NOT CHANGE THIS VALUE
-updateCheck: true # recommended to keep this value as true
+######################################
+# Text format
+######################################
+# Controls the syntax every message in this file is written in.
+#
+# MINIMESSAGE - MiniMessage tags
+# LEGACY      - the older "&a" colour codes, plus previous custom formatting.
+#
+#
+# MiniMessage reference: https://docs.advntr.dev/minimessage/format.html
+format: MINIMESSAGE
 
 help:
   1:
-    - "&5----------"
-    - "&b&lServer&d&lName"
-    - "&bPage 1: Navigation"
-    - "&5----------"
-    - "&b/warp &7&l- &r&dTeleport to predefined locations"
-    - "&b/home &7&l- &r&dTeleport to your set home location"
-    - "&b/tpa &7&l- &r&dRequest to teleport to another player"
-    - "&b/tpahere &7&l- &r&dRequest another player to teleport to you"
-    - "&5----------"
+    - "<dark_purple>----------"
+    - "<bold><aqua>Server<light_purple>Name"
+    - "<aqua>Page 1: Navigation"
+    - "<dark_purple>----------"
+    - "<aqua>/warp <gray><bold>- </bold><light_purple>Teleport to predefined locations"
+    - "<aqua>/home <gray><bold>- </bold><light_purple>Teleport to your set home location"
+    - "<aqua>/tpa <gray><bold>- </bold><light_purple>Request to teleport to another player"
+    - "<aqua>/tpahere <gray><bold>- </bold><light_purple>Request another player to teleport to you"
+    - "<dark_purple>----------"
   2:
-    - "&5----------"
-    - "&b&lServer&d&lName"
-    - "&bPage 2: Utility"
-    - "&5----------"
-    - "&b/heal &7&l- &r&dRestore your health"
-    - "&b/feed &7&l- &r&dSatisfy your hunger"
-    - "&b/repair &7&l- &r&dRepair your equipped items"
-    - "&b/vote &7&l- &r&dVote for the server"
-    - "&5----------"
+    - "<dark_purple>----------"
+    - "<bold><aqua>Server<light_purple>Name"
+    - "<aqua>Page 2: Utility"
+    - "<dark_purple>----------"
+    - "<aqua>/heal <gray><bold>- </bold><light_purple>Restore your health"
+    - "<aqua>/feed <gray><bold>- </bold><light_purple>Satisfy your hunger"
+    - "<aqua>/repair <gray><bold>- </bold><light_purple>Repair your equipped items"
+    - "<aqua>/vote <gray><bold>- </bold><light_purple>Vote for the server"
+    - "<dark_purple>----------"
   3:
-    - "&5----------"
-    - "&b&lServer&d&lName"
-    - "&bPage 3: Interaction"
-    - "&5----------"
-    - "&b/msg &7&l- &r&dSend a private message to another player"
-    - "&b/mute &7&l- &r&dMute a player in the chat"
-    - "&b/unmute &7&l- &r&dUnmute a previously muted player"
-    - "&b/report &7&l- &r&dReport a player for misconduct"
-    - "&5----------"
+    - "<dark_purple>----------"
+    - "<bold><aqua>Server<light_purple>Name"
+    - "<aqua>Page 3: Interaction"
+    - "<dark_purple>----------"
+    - "<aqua>/msg <gray><bold>- </bold><light_purple>Send a private message to another player"
+    - "<aqua>/mute <gray><bold>- </bold><light_purple>Mute a player in the chat"
+    - "<aqua>/unmute <gray><bold>- </bold><light_purple>Unmute a previously muted player"
+    - "<aqua>/report <gray><bold>- </bold><light_purple>Report a player for misconduct"
+    - "<dark_purple>----------"
   4:
-    - "&5----------"
-    - "&b&lServer&d&lName"
-    - "&bPage 4: Management"
-    - "&5----------"
-    - "&b/ban &7&l- &r&dBan a player from the server"
-    - "&b/kick &7&l- &r&dKick a player from the server"
-    - "&b/mutechat &7&l- &r&dMute the global chat"
-    - "&b/clearinventory &7&l- &r&dClear your inventory"
-    - "&5----------"
+    - "<dark_purple>----------"
+    - "<bold><aqua>Server<light_purple>Name"
+    - "<aqua>Page 4: Management"
+    - "<dark_purple>----------"
+    - "<aqua>/ban <gray><bold>- </bold><light_purple>Ban a player from the server"
+    - "<aqua>/kick <gray><bold>- </bold><light_purple>Kick a player from the server"
+    - "<aqua>/mutechat <gray><bold>- </bold><light_purple>Mute the global chat"
+    - "<aqua>/clearinventory <gray><bold>- </bold><light_purple>Clear your inventory"
+    - "<dark_purple>----------"
   5:
-    - "&5----------"
-    - "&b&lServer&d&lName"
-    - "&bPage 5: Fun Commands"
-    - "&5----------"
-    - "&b/summon &7&l- &r&dSummon a mob"
-    - "&b/lightning &7&l- &r&dStrike lightning at a location"
-    - "&b/tpall &7&l- &r&dTeleport all players to your location"
-    - "&b/fly &7&l- &r&dToggle flying mode"
-    - "&5----------"
+    - "<dark_purple>----------"
+    - "<bold><aqua>Server<light_purple>Name"
+    - "<aqua>Page 5: Fun Commands"
+    - "<dark_purple>----------"
+    - "<aqua>/summon <gray><bold>- </bold><light_purple>Summon a mob"
+    - "<aqua>/lightning <gray><bold>- </bold><light_purple>Strike lightning at a location"
+    - "<aqua>/tpall <gray><bold>- </bold><light_purple>Teleport all players to your location"
+    - "<aqua>/fly <gray><bold>- </bold><light_purple>Toggle flying mode"
+    - "<dark_purple>----------"
   6:
-    - "&5----------"
-    - "&b&lServer&d&lName"
-    - "&bPage 6: Miscellaneous"
-    - "&5----------"
-    - "&b/stats &7&l- &r&dDisplay your player statistics"
-    - "&b/afk &7&l- &r&dSet yourself as away from keyboard"
-    - "&b/rules &7&l- &r&dDisplay server rules"
-    - "&b/reportbug &7&l- &r&dReport a bug to the server administrators"
-    - "&5----------"
+    - "<dark_purple>----------"
+    - "<bold><aqua>Server<light_purple>Name"
+    - "<aqua>Page 6: Miscellaneous"
+    - "<dark_purple>----------"
+    - "<aqua>/stats <gray><bold>- </bold><light_purple>Display your player statistics"
+    - "<aqua>/afk <gray><bold>- </bold><light_purple>Set yourself as away from keyboard"
+    - "<aqua>/rules <gray><bold>- </bold><light_purple>Display server rules"
+    - "<aqua>/reportbug <gray><bold>- </bold><light_purple>Report a bug to the server administrators"
+    - "<dark_purple>----------"
 
 
 # It is recommended not to delete these pages and to just use the pagesEnabled list to control which pages are to be available
@@ -96,15 +105,17 @@ helpcmd: true
 ######################################
 # Language
 ######################################
-reload: '&aHelpCommand reloading' # sets message for /hc reload
-disabled: '&cThis command is disabled' # sets message for if a command is disabled
-noargument: '&cPlease use an argument' # sets message for /hc if no arguments are provided
+reload: '<green>HelpCommand reloading' # sets message for /hc reload
+disabled: '<red>This command is disabled' # sets message for if a command is disabled
+noargument: '<red>Please use an argument' # sets message for /hc if no arguments are provided
 playersOnly: 'Only players can use this command' # sets message for when a command is run from the console
-pageNA: '&cThis page does not exist!' # sets message for if a page doesn't exist
+pageNA: '<red>This page does not exist!' # sets message for if a page doesn't exist
 
+# The plugin makes the arrows clickable for you, so there is no need to add a <click>
+# tag yourself -- though any you do add will still work.
 pagePrompt:
   enabled: true
-  page: '&6Page &e$[pageNum]'
-  arrowBack: '&a[<< &2$[prevNum]&a]'
-  arrowForward: '&a[&2$[nextNum]&a >>]'
+  page: '<gold>Page <yellow>$[pageNum]'
+  arrowBack: '<green>[<< <dark_green>$[prevNum]<green>]'
+  arrowForward: '<green>[<dark_green>$[nextNum]<green> >>]'
 ######################################

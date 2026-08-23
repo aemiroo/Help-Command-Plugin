@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class helpAliases implements Listener {
-    FileConfiguration config = JavaPlugin.getPlugin(HelpCommand.class).getConfig();
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
+        FileConfiguration config = JavaPlugin.getPlugin(HelpCommand.class).getConfig();
         String command = event.getMessage().substring(1);
         List<String> aliases = config.getStringList("aliases");
         Player player = event.getPlayer();
@@ -30,7 +30,7 @@ public class helpAliases implements Listener {
         for (String alias : aliases) {
             if (command.equalsIgnoreCase(alias)) {
                 ver = (String) config.getStringList("help." + aliasIndex).stream().collect(Collectors.joining("\n"));
-                player.sendMessage(TextUtil.color(ver));
+                TextUtil.send(player, ver);
                 event.setCancelled(true); // removes the "Unknown command. Type "/help" for help." thing
                 return;
             }
