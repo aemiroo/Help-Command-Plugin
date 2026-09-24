@@ -159,13 +159,6 @@ public class HelpCommand extends JavaPlugin {
     }
 
     private CommandMap getCommandMap() {
-        try {
-            Field commandMapField = getServer().getClass().getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-            return (CommandMap) commandMapField.get(getServer());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return getServer().getCommandMap();
     }
 }
