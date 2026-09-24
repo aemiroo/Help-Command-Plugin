@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -147,6 +148,9 @@ public class HelpCommand extends JavaPlugin {
     private void registerAliases() {
         CommandMap commandMap = getCommandMap();
         List<String> aliases = getConfig().getStringList("aliases");
+        if (commandMap == null) {
+            return;
+        }
         for (String alias : aliases) {
             BukkitCommand command = new BukkitCommand(alias) {
                 @Override
@@ -159,6 +163,14 @@ public class HelpCommand extends JavaPlugin {
     }
 
     private CommandMap getCommandMap() {
-        return getServer().getCommandMap();
+        try {
+            Field commandMapField = getServer().getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            return (CommandMap) commandMapField.get(getServer());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            getLogger().severe("Unable to access the server command map; configured help aliases cannot be registered.");
+            e.printStackTrace();
+            return null;
+        }
     }
 }
