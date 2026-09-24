@@ -148,6 +148,9 @@ public class HelpCommand extends JavaPlugin {
     private void registerAliases() {
         CommandMap commandMap = getCommandMap();
         List<String> aliases = getConfig().getStringList("aliases");
+        if (commandMap == null) {
+            return;
+        }
         for (String alias : aliases) {
             BukkitCommand command = new BukkitCommand(alias) {
                 @Override
@@ -165,6 +168,7 @@ public class HelpCommand extends JavaPlugin {
             commandMapField.setAccessible(true);
             return (CommandMap) commandMapField.get(getServer());
         } catch (NoSuchFieldException | IllegalAccessException e) {
+            getLogger().severe("Unable to access the server command map; configured help aliases cannot be registered.");
             e.printStackTrace();
             return null;
         }

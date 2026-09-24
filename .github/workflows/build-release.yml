@@ -1,0 +1,48 @@
+name: Build GitHub Release
+
+on:
+  push:
+    branches:
+      - update/26.3-support
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build release JAR
+        run: mvn --batch-mode clean package
+
+      - name: Stage release JAR
+        shell: bash
+        run: |
+          mkdir -p release
+          JAR="$(find target -maxdepth 1 -type f -name '*.jar' ! -name 'original-*' | head -n 1)"
+          test -n "$JAR"
+          cp "$JAR" release/HelpCommand-2.9.4.jar
+
+      - name: Create/update 2.9.4 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v2.9.4
+          target_commitish: update/26.3-support
+          name: HelpCommand 2.9.4
+          body: |
+            HelpCommand 2.9.4
+
+            Updated for Minecraft 26.3 compatibility while retaining support for older compatible server versions.
+          files: release/HelpCommand-2.9.4.jar
+          fail_on_unmatched_files: true
