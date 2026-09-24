@@ -1,4 +1,4 @@
-name: Build release JAR
+name: Build GitHub Release
 
 on:
   push:
@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,9 +34,15 @@ jobs:
           test -n "$JAR"
           cp "$JAR" release/HelpCommand-2.9.4.jar
 
-      - name: Upload release JAR
-        uses: actions/upload-artifact@v4
+      - name: Create/update 2.9.4 GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: HelpCommand-2.9.4
-          path: release/HelpCommand-2.9.4.jar
-          if-no-files-found: error
+          tag_name: v2.9.4
+          target_commitish: update/26.3-support
+          name: HelpCommand 2.9.4
+          body: |
+            HelpCommand 2.9.4
+
+            Updated for Minecraft 26.3 compatibility while retaining support for older compatible server versions.
+          files: release/HelpCommand-2.9.4.jar
+          fail_on_unmatched_files: true
