@@ -3,6 +3,7 @@ package net.greenwoodmc.helpcommand;
 import net.greenwoodmc.helpcommand.commands.hcCommand;
 import net.greenwoodmc.helpcommand.listeners.helpAliases;
 import net.greenwoodmc.helpcommand.tabcomplete.hc;
+import net.greenwoodmc.helpcommand.tabcomplete.HelpPages;
 import net.greenwoodmc.helpcommand.util.FormatMode;
 import net.greenwoodmc.helpcommand.util.TextUtil;
 import org.bukkit.command.CommandMap;
@@ -43,6 +44,7 @@ public class HelpCommand extends JavaPlugin {
         resolveFormat(freshInstall);
         FileConfiguration config = getConfig();
         getCommand("help").setExecutor(new help());
+        getCommand("help").setTabCompleter(new HelpPages(this));
         getCommand("hc").setExecutor(new hcCommand());
         getCommand("hc").setTabCompleter(new hc());
         if (!config.getStringList("aliases").isEmpty()) {
@@ -148,8 +150,16 @@ public class HelpCommand extends JavaPlugin {
     private void registerAliases() {
         CommandMap commandMap = getCommandMap();
         List<String> aliases = getConfig().getStringList("aliases");
+        if (commandMap == null) {
+            return;
+        }
         for (String alias : aliases) {
             BukkitCommand command = new BukkitCommand(alias) {
+                @Override
+                public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+                    return new HelpPages(HelpCommand.this).onTabComplete(sender, this, label, args);
+                }
+
                 @Override
                 public boolean execute(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
                     return false;
@@ -165,6 +175,7 @@ public class HelpCommand extends JavaPlugin {
             commandMapField.setAccessible(true);
             return (CommandMap) commandMapField.get(getServer());
         } catch (NoSuchFieldException | IllegalAccessException e) {
+            getLogger().severe("Unable to access the server command map; configured help aliases cannot be registered.");
             e.printStackTrace();
             return null;
         }

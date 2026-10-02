@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import net.md_5.bungee.api.ChatColor;
 import java.util.regex.Matcher;
 import org.bukkit.Bukkit;
@@ -29,8 +29,8 @@ public class IridiumColorAPI {
     public IridiumColorAPI() {
     }
 
-    @Nonnull
-    public static String process(@Nonnull String string) {
+    @NotNull
+    public static String process(@NotNull String string) {
         Pattern pattern;
         for(Iterator var1 = PATTERNS.iterator(); var1.hasNext(); string = pattern.process(string)) {
             pattern = (Pattern)var1.next();
@@ -40,40 +40,40 @@ public class IridiumColorAPI {
         return string;
     }
 
-    @Nonnull
-    public static List<String> process(@Nonnull Collection<String> strings) {
+    @NotNull
+    public static List<String> process(@NotNull Collection<String> strings) {
         return (List)strings.stream().map(IridiumColorAPI::process).collect(Collectors.toList());
     }
 
-    @Nonnull
-    public static String color(@Nonnull String string, @Nonnull Color color) {
+    @NotNull
+    public static String color(@NotNull String string, @NotNull Color color) {
         return (SUPPORTS_RGB ? ChatColor.of(color) : getClosestColor(color)) + string;
     }
 
-    @Nonnull
-    public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
+    @NotNull
+    public static String color(@NotNull String string, @NotNull Color start, @NotNull Color end) {
         ChatColor[] colors = createGradient(start, end, withoutSpecialChar(string).length());
         return apply(string, colors);
     }
 
-    @Nonnull
-    public static String rainbow(@Nonnull String string, float saturation) {
+    @NotNull
+    public static String rainbow(@NotNull String string, float saturation) {
         ChatColor[] colors = createRainbow(withoutSpecialChar(string).length(), saturation);
         return apply(string, colors);
     }
 
-    @Nonnull
-    public static ChatColor getColor(@Nonnull String string) {
+    @NotNull
+    public static ChatColor getColor(@NotNull String string) {
         return SUPPORTS_RGB ? ChatColor.of(new Color(Integer.parseInt(string, 16))) : getClosestColor(new Color(Integer.parseInt(string, 16)));
     }
 
-    @Nonnull
-    public static String stripColorFormatting(@Nonnull String string) {
+    @NotNull
+    public static String stripColorFormatting(@NotNull String string) {
         return string.replaceAll("<#[0-9A-F]{6}>|[&§][a-f0-9lnokm]|<[/]?[A-Z]{5,8}(:[0-9A-F]{6})?[0-9]*>", "");
     }
 
-    @Nonnull
-    private static String apply(@Nonnull String source, ChatColor[] colors) {
+    @NotNull
+    private static String apply(@NotNull String source, ChatColor[] colors) {
         StringBuilder specialColors = new StringBuilder();
         StringBuilder stringBuilder = new StringBuilder();
         String[] characters = source.split("");
@@ -99,8 +99,8 @@ public class IridiumColorAPI {
         return stringBuilder.toString();
     }
 
-    @Nonnull
-    private static String withoutSpecialChar(@Nonnull String source) {
+    @NotNull
+    private static String withoutSpecialChar(@NotNull String source) {
         String workingString = source;
         Iterator var2 = SPECIAL_COLORS.iterator();
 
@@ -114,7 +114,7 @@ public class IridiumColorAPI {
         return workingString;
     }
 
-    @Nonnull
+    @NotNull
     private static ChatColor[] createRainbow(int step, float saturation) {
         ChatColor[] colors = new ChatColor[step];
         double colorStep = 1.0D / (double)step;
@@ -131,8 +131,8 @@ public class IridiumColorAPI {
         return colors;
     }
 
-    @Nonnull
-    private static ChatColor[] createGradient(@Nonnull Color start, @Nonnull Color end, int step) {
+    @NotNull
+    private static ChatColor[] createGradient(@NotNull Color start, @NotNull Color end, int step) {
         ChatColor[] colors = new ChatColor[step];
         int stepR = Math.abs(start.getRed() - end.getRed()) / (step - 1);
         int stepG = Math.abs(start.getGreen() - end.getGreen()) / (step - 1);
@@ -151,7 +151,7 @@ public class IridiumColorAPI {
         return colors;
     }
 
-    @Nonnull
+    @NotNull
     private static ChatColor getClosestColor(Color color) {
         Color nearestColor = null;
         double nearestDistance = 2.147483647E9D;
